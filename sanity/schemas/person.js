@@ -1,7 +1,9 @@
 import { MdPerson as icon } from 'react-icons/md';
 
 export default {
+  // Computer Name
   name: 'person',
+  // visible title
   title: 'Slicemasters',
   type: 'document',
   icon,
@@ -35,14 +37,4 @@ export default {
       },
     },
   ],
-  preview: {
-    select: {
-      title: 'name',
-      media: 'image',
-    },
-    prepare: ({ title, media }) => ({
-      title,
-      media,
-    }),
-  },
 };
