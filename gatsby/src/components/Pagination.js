@@ -1,5 +1,5 @@
-import React from 'react';
 import { Link } from 'gatsby';
+import React from 'react';
 import styled from 'styled-components';
 
 const PaginationStyles = styled.div`
@@ -43,14 +43,22 @@ export default function Pagination({
 
   return (
     <PaginationStyles>
-      <Link disabled={currentPage === 1} to={prevPath}>← Prev</Link>
+      <Link disabled={currentPage === 1} to={prevPath}>
+        ← Prev
+      </Link>
       {Array.from({ length: totalPages }).map((_, i) => {
         const toPage = i + 1;
         const toPath = toPage > 1 ? `${base}/${toPage}` : base;
 
-        return <Link to={toPath}>{toPage}</Link>;
+        return (
+          <Link to={toPath} key={i}>
+            {toPage}
+          </Link>
+        );
       })}
-      <Link disabled={currentPage === totalPages} to={nextPath}>Next →</Link>
+      <Link disabled={currentPage === totalPages} to={nextPath}>
+        Next →
+      </Link>
     </PaginationStyles>
   );
 }

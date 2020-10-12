@@ -16,18 +16,30 @@ export default function OrderPage({ data }) {
   const { values, updateValue } = useForm({
     name: '',
     email: '',
-    coupon: 'FREESHIP',
+    website: '',
   });
-  const { order, addToOrder, removeFromOrder } = usePizza({
+  const {
+    order,
+    addToOrder,
+    removeFromOrder,
+    submitOrder,
+    error,
+    loading,
+    message,
+  } = usePizza({
     pizzas,
-    inputs: values,
+    values,
   });
+
+  if (message) {
+    return <p>{message}</p>;
+  }
 
   return (
     <>
       <SEO title="Order a Pizza!" />
-      <OrderStyles>
-        <fieldset className="info">
+      <OrderStyles onSubmit={submitOrder}>
+        <fieldset className="info" disabled={loading}>
           <legend>Your Info</legend>
           <label htmlFor="name">
             Name
@@ -49,18 +61,17 @@ export default function OrderPage({ data }) {
               onChange={updateValue}
             />
           </label>
-          <label htmlFor="coupon">
-            Coupon
-            <input
-              type="coupon"
-              id="coupon"
-              name="coupon"
-              value={values.coupon}
-              onChange={updateValue}
-            />
-          </label>
+          {/* Honeypot */}
+          <input
+            type="text"
+            id="website"
+            className="website"
+            name="website"
+            value={values.website}
+            onChange={updateValue}
+          />
         </fieldset>
-        <fieldset className="menu">
+        <fieldset className="menu" disabled={loading}>
           <legend>Menu</legend>
           {pizzas.map((pizza) => (
             <MenuItemStyles key={pizza.id}>
@@ -74,10 +85,11 @@ export default function OrderPage({ data }) {
                 <h2>{pizza.name}</h2>
               </div>
               <div>
-                {['S', 'M', 'L'].map((size) => (
+                {['S', 'M', 'L'].map((size, i) => (
                   <button
                     type="button"
                     onClick={() => addToOrder({ id: pizza.id, size })}
+                    key={i}
                   >
                     {size} {formatMoney(calculatePizzaPrice(pizza.price, size))}
                   </button>
@@ -86,7 +98,7 @@ export default function OrderPage({ data }) {
             </MenuItemStyles>
           ))}
         </fieldset>
-        <fieldset className="order">
+        <fieldset className="order" disabled={loading}>
           <legend>Order</legend>
           <PizzaOrder
             order={order}
@@ -94,11 +106,14 @@ export default function OrderPage({ data }) {
             removeFromOrder={removeFromOrder}
           />
         </fieldset>
-        <fieldset>
+        <fieldset disabled={loading}>
           <h3>
             Your Total is {formatMoney(calculateOrderTotal(order, pizzas))}
           </h3>
-          <button type="submit">Order Ahead</button>
+          <div>{error ? <p>Error: {error}</p> : ''}</div>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Placing Order…' : 'Order Ahead'}
+          </button>
         </fieldset>
       </OrderStyles>
     </>

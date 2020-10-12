@@ -11,7 +11,7 @@ export default function PizzaOrder({ order, pizzas, removeFromOrder }) {
         const pizza = pizzas.find((p) => p.id === item.id);
 
         return (
-          <MenuItemStyles key={item.id}>
+          <MenuItemStyles key={`${item.id}-${index}`}>
             <Img
               width="50"
               height="50"

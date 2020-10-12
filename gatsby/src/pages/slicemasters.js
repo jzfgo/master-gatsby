@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link, graphql } from 'gatsby';
+import { graphql, Link } from 'gatsby';
 import Img from 'gatsby-image';
+import React from 'react';
 import styled from 'styled-components';
 import Pagination from '../components/Pagination';
 import SEO from '../components/SEO';
@@ -58,8 +58,8 @@ export default function SlicemastersPage({
         base="/slicemasters"
       />
       <SlicemasterGrid>
-        {slicemasters.map((person) => (
-          <SlicemasterStyles>
+        {slicemasters.map((person, i) => (
+          <SlicemasterStyles key={i}>
             <Link to={`/slicemaster/${person.slug.current}`}>
               <h2>
                 <span className="mark">{person.name}</span>
