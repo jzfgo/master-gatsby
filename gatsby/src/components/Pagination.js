@@ -4,8 +4,9 @@ import styled from 'styled-components';
 
 const PaginationStyles = styled.div`
   display: flex;
-  place-content: center;
-  place-items: center;
+  align-content: center;
+  align-items: center;
+  justify-items: center;
   border: 1px solid var(--grey);
   margin: 2rem 0;
   border-radius: 5px;
@@ -23,6 +24,12 @@ const PaginationStyles = styled.div`
       pointer-events: none;
       color: var(--grey);
     }
+  }
+  @media (max-width: 800px) {
+    .word {
+      display: none;
+    }
+    font-size: 1.4rem;
   }
 `;
 
@@ -43,21 +50,25 @@ export default function Pagination({
 
   return (
     <PaginationStyles>
-      <Link disabled={currentPage === 1} to={prevPath}>
-        ← Prev
+      <Link title="Previous page" disabled={currentPage === 1} to={prevPath}>
+        ← <span className="word">Prev</span>
       </Link>
       {Array.from({ length: totalPages }).map((_, i) => {
         const toPage = i + 1;
         const toPath = toPage > 1 ? `${base}/${toPage}` : base;
 
         return (
-          <Link to={toPath} key={i}>
+          <Link to={toPath} key={`page-${i}`}>
             {toPage}
           </Link>
         );
       })}
-      <Link disabled={currentPage === totalPages} to={nextPath}>
-        Next →
+      <Link
+        title="Next page"
+        disabled={currentPage === totalPages}
+        to={nextPath}
+      >
+        <span className="word">Next</span> →
       </Link>
     </PaginationStyles>
   );
